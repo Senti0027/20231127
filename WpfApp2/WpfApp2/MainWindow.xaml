@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" Background="#FFDBF1EF" Grid.ColumnSpan="3">
             <Label Content="學生" FontSize="24"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0"/>
-            <ComboBox x:Name="cmStudent" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <ComboBox x:Name="cmbStudent" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="cmbStudent_SelectionChanged"/>
         </StackPanel>
         <StatusBar Grid.Row="2" Grid.ColumnSpan="3">
             <Label x:Name="LabelStatus" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0" Width="200" Height="30"/>
