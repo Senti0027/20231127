@@ -48,7 +48,13 @@ namespace WpfApp2
             students.Add(new Student { StudentId = "A1234678", StudentName = "王小美" });
             students.Add(new Student { StudentId = "A1234789", StudentName = "林小英" });
 
+            /*foreach (Student student in students)
+            {
+                cmbStudent.Items.Add(student);//另一種方法Another way
+            }*/
+
             cmbStudent.ItemsSource = students;
+
             cmbStudent.SelectedIndex = 0;
         }
        
@@ -60,7 +66,8 @@ namespace WpfApp2
 
         private void cmbStudent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            selectedStudent=(Student)cmbStudent.SelectedItem;
+            LabelStatus.Content = $"選取學生:{selectedStudent.ToString()}";
         }
     }
 }
