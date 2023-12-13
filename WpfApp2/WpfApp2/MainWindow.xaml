@@ -26,10 +26,55 @@
         </StatusBar>
         <TabControl Grid.Row="1" Background="#FFD5F7F5">
             <TabItem Header="以教師來分類課程">
-                <TreeView Background="#FFF9F7DE"/>
+                 <TreeView x:Name="tvTeacher" Background="#FFFFFDE5">
+                    <TreeView.Resources>
+                        <!-- Teacher節點的模板-->
+                        <HierarchicalDataTemplate DataType="{x:Type local:Teacher}" ItemsSource="{Binding TeachingCourses}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="20" Height="20" Source="/teacher.png"/>
+                                <TextBlock Text="{Binding TeacherName}"/>
+                                <TextBlock Text="("/>
+                                <TextBlock Text="{Binding TeachingCourses.Count}"/>
+                                <TextBlock Text=")"/>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <!-- Course節點的模板-->
+                        <DataTemplate DataType="{x:Type local:Course}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="20" Height="20" Source="/course.png"/>
+                                <TextBlock Text="{Binding CourseName}" FontWeight="Bold" Foreground="blue"/>
+                                <TextBlock Text=" : "/>
+                                <TextBlock Text="{Binding OpeningClass}"/>
+                                <TextBlock Text=" "/>
+                                <TextBlock Text="{Binding Type}"/>
+                                <TextBlock Text="{Binding Point}" Foreground="Red" FontWeight="Bold"/>
+                                <TextBlock Text="學分"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+                
             </TabItem>
             <TabItem Header="所有課程">
-                <ListBox Background="#FFC2D6FD"/>
+                <ListBox x:Name="lbCourse" Background="#FFC2D6FD" SelectionChanged="lbCourse_SelectionChanged">
+                <ListBox.Resources>
+                    <DataTemplate DataType="{x:Type local:Course}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CourseName}" FontWeight="Bold" Foreground="blue"/>
+                                <TextBlock Text=" : "/>
+                                <TextBlock Text="{Binding Point}"/>
+                                <TextBlock Text="學分"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Type}" />
+                                <TextBlock Text=" "/>
+                                <TextBlock Text="{Binding OpeningClass}" Foreground="DarkBlue"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.Resources>
+                </ListBox>
             </TabItem>
         </TabControl>
         
