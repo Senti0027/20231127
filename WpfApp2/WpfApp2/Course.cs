@@ -13,5 +13,9 @@ namespace WpfApp2
         public Course(Teacher totur) {
             Tutor=totur;
         }
+        public override string ToString()
+        {
+            return $"選取課程:{CourseName}({Type}:{Point}學分)";
+        }
     }
 }

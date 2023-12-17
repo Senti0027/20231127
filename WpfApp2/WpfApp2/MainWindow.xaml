@@ -18,15 +18,15 @@
             <ColumnDefinition Width="500*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" Background="#FFDBF1EF" Grid.ColumnSpan="3">
-            <Label Content="學生" FontSize="24"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0"/>
+            <Label Content="學生" FontSize="18"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0"/>
             <ComboBox x:Name="cmbStudent" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="cmbStudent_SelectionChanged"/>
         </StackPanel>
         <StatusBar Grid.Row="2" Grid.ColumnSpan="3">
-            <Label x:Name="LabelStatus" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0" Width="200" Height="30"/>
+            <Label x:Name="labelStatus" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0" Width="200" Height="30"/>
         </StatusBar>
         <TabControl Grid.Row="1" Background="#FFD5F7F5">
             <TabItem Header="以教師來分類課程">
-                 <TreeView x:Name="tvTeacher" Background="#FFFFFDE5">
+                 <TreeView x:Name="tvTeacher" Background="#FFFFFDE5" SelectedItemChanged="tvTeacher_SelectedItemChanged">
                     <TreeView.Resources>
                         <!-- Teacher節點的模板-->
                         <HierarchicalDataTemplate DataType="{x:Type local:Teacher}" ItemsSource="{Binding TeachingCourses}">
@@ -79,7 +79,7 @@
         </TabControl>
         
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-            <Button x:Name="btnRegister" Content="選課" Width="80" Height="50" Margin="0,100,0,0" FontSize="16" FontWeight="Bold"/>
+            <Button x:Name="btnRegister" Content="選課" Width="80" Height="50" Margin="0,100,0,0" FontSize="16" FontWeight="Bold" Click="btnRegister_Click"/>
             <Button x:Name="btnWithdrawl" Content="退選" Width="80" Height="50" Margin="0,20,0,0" FontSize="16" FontWeight="Bold"/>
             <Button x:Name="btnsave" Content="儲存紀錄" Width="80" Height="50" Margin="0,20,0,0" FontSize="16" FontWeight="Bold" Click="btnsave_Click"/>
         </StackPanel>

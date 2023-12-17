@@ -29,6 +29,9 @@ namespace WpfApp2
         List<Teacher> teachers = new List<Teacher>();
         Teacher selectedTeacher = null;
 
+        List<Record> records = new List<Record>();
+        Record selectedRecord = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -68,7 +71,7 @@ namespace WpfApp2
             teachers.Add(teacher1);
             teachers.Add(teacher2);
             teachers.Add(teacher3);
-            tvTeacher.ItemsSource = teachers;
+            tvTeacher.ItemsSource = teachers;//將所有資料匯入
             foreach (Teacher teacher in teachers)
             {
                 foreach (Course course in teacher.TeachingCourses)
@@ -104,12 +107,53 @@ namespace WpfApp2
         private void cmbStudent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedStudent=(Student)cmbStudent.SelectedItem;
-            LabelStatus.Content = $"選取學生:{selectedStudent.ToString()}";
+            labelStatus.Content = $"選取學生:{selectedStudent.ToString()}";
         }
 
         private void lbCourse_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            selectedCourse=(Course)lbCourse.SelectedItem;
+        }
+        private void tvTeacher_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if(tvTeacher.SelectedValue is Teacher) 
+            {
+                selectedTeacher = (Teacher)tvTeacher.SelectedItem;
+                labelStatus.Content = $"選取教師：{selectedTeacher.ToString()}";
+            }
+            else if (tvTeacher.SelectedItem is Course)
+            {
+                selectedCourse = (Course)tvTeacher.SelectedItem;
+                labelStatus.Content = selectedCourse.ToString();
+            }
 
+
+           
+        }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            if(selectedStudent is null || selectedCourse is null)
+            {
+                MessageBox.Show("請選取學生或課程");
+                return;
+            }
+            else
+            {
+                Record newrecord = new Record() { SelectedStudent = selectedStudent, SelectedCourse=selectedCourse};
+                foreach(Record r in records)
+                {
+                    if(r.Equals(newrecord))
+                    {
+                        MessageBox.Show($"{selectedStudent.StudentName}已選取 {selectedCourse.CourseName}");
+                        return;
+                    }
+                }
+
+                records.Add(newrecord);
+                lvRecord.ItemsSource = records;
+                lvRecord.Items.Refresh();
+            }
         }
     }
 }

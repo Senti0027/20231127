@@ -13,6 +13,9 @@ namespace WpfApp2
         public ObservableCollection<Course> TeachingCourses { get; set; }=
         new ObservableCollection<Course>();//在更動集合中的項目時發出通知
 
-
+        public override string ToString()
+        {
+            return $"{TeacherName}";
+        }
     }
 }
