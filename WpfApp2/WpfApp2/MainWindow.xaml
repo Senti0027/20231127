@@ -82,6 +82,7 @@
             <Button x:Name="btnRegister" Content="選課" Width="80" Height="50" Margin="0,100,0,0" FontSize="16" FontWeight="Bold" Click="btnRegister_Click"/>
             <Button x:Name="btnWithdrawl" Content="退選" Width="80" Height="50" Margin="0,20,0,0" FontSize="16" FontWeight="Bold" Click="btnWithdrawl_Click"/>
             <Button x:Name="btnsave" Content="儲存紀錄" Width="80" Height="50" Margin="0,20,0,0" FontSize="16" FontWeight="Bold" Click="btnsave_Click"/>
+            <Button x:Name="opbtn" Content="載入名單" Width="80" Height="50" Margin="0,20,0,0" FontSize="16" FontWeight="Bold" Click="opbtn_Click"/>
         </StackPanel>
         <ListView x:Name="lvRecord" ItemsSource="{Binding records}" Grid.Row="1" Grid.Column="2" Background="#FFF9F7DE" SelectionChanged="lvRecord_SelectionChanged">
             <ListView.View>

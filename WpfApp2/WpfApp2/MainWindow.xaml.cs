@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Net.Http.Json;
 
 namespace WpfApp2
 {
@@ -104,25 +105,7 @@ namespace WpfApp2
         }
        
 
-        private void btnsave_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Json文件 (*.json)|*.json|All Files (*.*)|*.*";
-            saveFileDialog.Title = "儲存學生選課紀錄";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                JsonSerializerOptions options = new JsonSerializerOptions
-                {
-                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                    WriteIndented = true
-                };
-
-                string jsonString = JsonSerializer.Serialize(records, options);
-                File.WriteAllText(saveFileDialog.FileName, jsonString);
-            }
-        }
+        
 
         private void cmbStudent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -188,6 +171,52 @@ namespace WpfApp2
                 records.Remove(selectedRecord);
                 lvRecord.ItemsSource=records;
                 lvRecord.Items.Refresh();
+            }
+        }
+
+        private void opbtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "Json文件 (*.json)|*.json|All Files (*.*)|*.*";
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    string jsonContent = File.ReadAllText(fileDialog.FileName);
+
+                    // 使用 Newtonsoft.Json 进行反序列化
+                    List<Student> students = JsonConvert.DeserializeObject<List<Student>>(jsonContent);
+
+                    // 清空 ComboBox 中的项
+                    cmbStudent.Items.Clear();
+
+                    // 将学号和姓名添加到 ComboBox 中
+                    foreach (var student in students)
+                    {
+                        string displayText = $"{student.StudentId} - {student.StudentName}";
+                        cmbStudent.Items.Add(displayText);
+                    }
+                }
+            }
+        }
+        private void btnsave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Json文件 (*.json)|*.json|All Files (*.*)|*.*";
+            saveFileDialog.Title = "儲存學生選課紀錄";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+
+                string jsonString = JsonSerializer.Serialize(records, options);
+                File.WriteAllText(saveFileDialog.FileName, jsonString);
             }
         }
     }
