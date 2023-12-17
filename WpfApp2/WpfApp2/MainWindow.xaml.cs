@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace WpfApp2
 {
@@ -94,14 +100,28 @@ namespace WpfApp2
             }*/
 
             cmbStudent.ItemsSource = students;
-
             cmbStudent.SelectedIndex = 0;
         }
        
 
         private void btnsave_Click(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Json文件 (*.json)|*.json|All Files (*.*)|*.*";
+            saveFileDialog.Title = "儲存學生選課紀錄";
 
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+
+                string jsonString = JsonSerializer.Serialize(records, options);
+                File.WriteAllText(saveFileDialog.FileName, jsonString);
+            }
         }
 
         private void cmbStudent_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -113,6 +133,7 @@ namespace WpfApp2
         private void lbCourse_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedCourse=(Course)lbCourse.SelectedItem;
+            labelStatus.Content = selectedCourse.ToString();
         }
         private void tvTeacher_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -125,10 +146,7 @@ namespace WpfApp2
             {
                 selectedCourse = (Course)tvTeacher.SelectedItem;
                 labelStatus.Content = selectedCourse.ToString();
-            }
-
-
-           
+            }        
         }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
@@ -152,6 +170,23 @@ namespace WpfApp2
 
                 records.Add(newrecord);
                 lvRecord.ItemsSource = records;
+                lvRecord.Items.Refresh();
+                
+            }
+        }
+
+        private void lvRecord_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedRecord = (Record)lvRecord.SelectedItem;
+            if (selectedRecord != null) labelStatus.Content = selectedRecord.ToString();//右側的選取，底下顯示
+        }
+
+        private void btnWithdrawl_Click(object sender, RoutedEventArgs e)//退選
+        {
+            if(selectedRecord is not null)
+            {
+                records.Remove(selectedRecord);
+                lvRecord.ItemsSource=records;
                 lvRecord.Items.Refresh();
             }
         }
