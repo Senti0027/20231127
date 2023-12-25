@@ -109,9 +109,13 @@ namespace WpfApp2
 
         private void cmbStudent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedStudent=(Student)cmbStudent.SelectedItem;
-            labelStatus.Content = $"選取學生:{selectedStudent.ToString()}";
+            if(selectedStudent != null)
+            {
+                selectedStudent = (Student)cmbStudent.SelectedItem;
+                labelStatus.Content = $"選取學生:{selectedStudent.ToString()}";
+            }
         }
+            
 
         private void lbCourse_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -176,29 +180,30 @@ namespace WpfApp2
 
         private void opbtn_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Json文件 (*.json)|*.json|All Files (*.*)|*.*";
-
-            if (fileDialog.ShowDialog() == true)
+            try
             {
-                try
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Json文件 (*.json)|*.json|All Files (*.*)|*.*";
+                openFileDialog.Title = "選擇學生資料檔案";
+
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    string jsonContent = File.ReadAllText(fileDialog.FileName);
+                    string jsonContent = File.ReadAllText(openFileDialog.FileName);
+                    List<Student> loadedStudents = JsonSerializer.Deserialize<List<Student>>(jsonContent);
 
-                    // 使用 Newtonsoft.Json 进行反序列化
-                    List<Student> students = JsonConvert.DeserializeObject<List<Student>>(jsonContent);
-
-                    // 清空 ComboBox 中的项
-                    cmbStudent.Items.Clear();
-
-                    // 将学号和姓名添加到 ComboBox 中
-                    foreach (var student in students)
+                    if (loadedStudents != null)
                     {
-                        string displayText = $"{student.StudentId} - {student.StudentName}";
-                        cmbStudent.Items.Add(displayText);
+                        cmbStudent.ItemsSource = loadedStudents;
+                        cmbStudent.DisplayMemberPath = null; // 清除 DisplayMemberPath
+                        cmbStudent.SelectedIndex = 0;
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("The file could not be read:");
+            }
+        
         }
         private void btnsave_Click(object sender, RoutedEventArgs e)
         {
