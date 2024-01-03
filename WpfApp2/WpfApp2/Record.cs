@@ -13,7 +13,7 @@ namespace WpfApp2
 
         public bool Equals(Record record)
         {
-            return SelectedStudent.StudentId == record.SelectedStudent.StudentId && 
+            return SelectedStudent.StudentId == record.SelectedStudent.StudentId &&
                    SelectedCourse.CourseName == record.SelectedCourse.CourseName;
         }
 

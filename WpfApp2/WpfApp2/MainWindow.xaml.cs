@@ -28,16 +28,16 @@ namespace WpfApp2
     public partial class MainWindow : Window
     {
         List<Student> students=new List<Student>();
-        Student selectedStudent = null;
+        Student? selectedStudent = null;
 
         List<Course> courses = new List<Course>();
-        Course selectedCourse = null;
+        Course? selectedCourse = null;
 
         List<Teacher> teachers = new List<Teacher>();
-        Teacher selectedTeacher = null;
+        Teacher? selectedTeacher = null;
 
         List<Record> records = new List<Record>();
-        Record selectedRecord = null;
+        Record? selectedRecord = null;
 
         public MainWindow()
         {
@@ -109,11 +109,11 @@ namespace WpfApp2
 
         private void cmbStudent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(selectedStudent != null)
-            {
+            
+            
                 selectedStudent = (Student)cmbStudent.SelectedItem;
                 labelStatus.Content = $"選取學生:{selectedStudent.ToString()}";
-            }
+            
         }
             
 
